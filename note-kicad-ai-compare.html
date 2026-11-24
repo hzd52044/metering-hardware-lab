@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="实测对比 Gemini 4 Neon（Antigravity）与 DeepSeek 4.1 Flash（WorkBuddy + Skill）使用 KiCad 10.0 绘制双层 AMS1117-3.3 LDO 测试板的完整过程与结果。">
+<title>AI 画 PCB 实测对比：Gemini 4 Neon vs DeepSeek 4.1 Flash — 计量硬件实验室</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html">
+    <span class="brand-mark">计</span>
+    <span><b>计量硬件实验室</b><small>电能计量 · PCB · 嵌入式</small></span>
+  </a>
+  <nav>
+    <a href="index.html#projects">硬件项目</a>
+    <a href="index.html#notes">实验笔记</a>
+    <a href="index.html#vlog">实验视频</a>
+    <a href="index.html#about">关于我</a>
+    <a href="index.html#contact">联系交流</a>
+  </nav>
+</header>
+
+<main class="article-wrap">
+  <a class="back-link" href="index.html#notes">← 返回实验笔记</a>
+
+  <header class="article-head">
+    <p class="eyebrow">AI 硬件实测 / KiCad 10.0 / 工程对比</p>
+    <h1>AI 画 PCB 实测对比：Gemini 4 Neon（Antigravity）vs DeepSeek 4.1 Flash（WorkBuddy）</h1>
+    <div class="article-meta">
+      <span>2026年11月24日</span>
+      <span>目标电路：AMS1117-3.3 双层 LDO 测试板</span>
+      <span>EDA：KiCad 10.0.6</span>
+    </div>
+  </header>
+
+  <article class="article-body">
+    <p class="article-lead">
+      同样是让 AI 用 <strong>KiCad 10.0</strong> 从原理图一路画到双层 PCB，一次是 <strong>Gemini 4 Neon（Antigravity）</strong> 无额外 Skill 直接“裸跑”，一次是 <strong>DeepSeek 4.1 Flash（WorkBuddy）</strong> 配合专用 KiCad Skill 进行强化审核。对比两者的最终产出，差距比预想的还要明显——这不仅是模型能力的对比，更是<strong>“通用推理”与“工程规范 Skill”</strong>之间的一次直观碰撞。
+    </p>
+
+    <h2>一、测试背景与基本条件</h2>
+    <p>
+      本次测试选用硬件工程师最熟悉的经典入门电源电路——<strong>5V 转 3.3V（1A）AMS1117-3.3 双层 LDO 测试板</strong>，包含输入输出排针、输入/输出退耦电容、电源指示 LED，要求从原理图绘制到双层 PCB 布局布线并保证电气规则与设计规则通过。
+    </p>
+
+    <div class="table-scroll">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>对比维度</th>
+            <th>Gemini 4 Neon（Low）</th>
+            <th>DeepSeek 4.1 Flash</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>运行平台</strong></td>
+            <td>Antigravity 2.0 桌面端</td>
+            <td>WorkBuddy</td>
+          </tr>
+          <tr>
+            <td><strong>是否使用专有 Skill</strong></td>
+            <td>无（纯模型裸跑，自动调用 <code>kicad-cli</code>）</td>
+            <td><strong>有</strong>（引入 KiCad 专用 Skill 强化审核）</td>
+          </tr>
+          <tr>
+            <td><strong>人工干预</strong></td>
+            <td>仅在最后提示一次：将 90° 直角走线改为 45° 斜角</td>
+            <td>通过 Skill 流程自动完成规范审查与优化</td>
+          </tr>
+          <tr>
+            <td><strong>原理图表现</strong></td>
+            <td>完整规范，主动补齐 <code>PWR_FLAG</code> 与 3 个测试点（TP1~TP3）</td>
+            <td>结构清爽，分立 GND 符号，附带输入/输出文字标注</td>
+          </tr>
+          <tr>
+            <td><strong>PCB 工艺细节</strong></td>
+            <td>左进右出功率流清晰、底层整面 GND 铺铜；无倒角/安装孔，部分电容丝印重叠</td>
+            <td><strong>四角 45° 倒角 + 双安装孔 + 整板缝合地孔阵列</strong>，位号丝印极干净、零重叠</td>
+          </tr>
+          <tr>
+            <td><strong>走线规范</strong></td>
+            <td>首轮默认 90° 直角，人工提醒 1 次后全部改为 45°</td>
+            <td>全程标准 45° 斜角走线，布线整洁</td>
+          </tr>
+          <tr>
+            <td><strong>ERC / DRC 校验</strong></td>
+            <td><code>kicad-cli</code> 实测 0 错误、0 警告、0 未连接</td>
+            <td>经 Skill 审核通过</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>二、Gemini 4 Neon（Antigravity）完整过程复盘</h2>
+    <p>
+      在 Antigravity 中，我只给了一句非常宽泛的指令：<em>“连接我打开的 kicad 工程，并绘制一个双层 LDO 测试板，从原理图到 PCB”</em>。没有附加任何 KiCad 规范 Skill，全程看模型自己的发挥：
+    </p>
+    <ul>
+      <li><strong>首轮生成（09:18 → 09:25，约 7 分钟）</strong>：模型自动定位到本机已打开的 KiCad 10.0 工程，生成了完整的 <code>TEST.kicad_sch</code> 原理图与 <code>40 mm × 30 mm</code> 双层 PCB，并主动调用 <code>kicad-cli</code> 跑通了 ERC（0 错误 0 警告）和 DRC（0 违规、0 未连接、0 封装错误）。</li>
+      <li><strong>二轮优化（09:28 → 09:30，约 1 分 50 秒）</strong>：打开 PCB 检查时发现走线都是 90° 直角，提醒一句<em>“走线都是直角，不是 45° 走线”</em>后，模型迅速把所有拐角改成了标准 45° 斜角并重新通过 DRC。</li>
+      <li><strong>额度消耗</strong>：完成前面客户端配置加上本次完整 KiCad 原理图/PCB/校验迭代后，5 小时限额仍剩余 <strong>95%</strong>，每周限额剩余 <strong>98%</strong>，成本非常低。</li>
+    </ul>
+
+    <figure class="article-figure narrow">
+      <img src="assets/kicad-compare/gemini-usage.png" alt="Antigravity Gemini 4 Neon 额度消耗截图">
+      <figcaption>图 1：完成本次 KiCad 全流程后，Gemini 模型 5h 限额剩余 95%、周限额剩余 98%</figcaption>
+    </figure>
+
+    <h2>三、原理图对比</h2>
+    <p>
+      两份原理图在电气连接上都非常准确，都采用了经典的输入 <code>10µF + 100nF</code>、输出 <code>22µF + 100nF</code> 退耦搭配以及 <code>1kΩ + LED</code> 电源指示。区别在于风格细节：Gemini 主动考虑到了实验室调试需求，额外加了 <code>TP1 / TP2 / TP3</code> 三个测试点和 <code>PWR_FLAG</code>；而 DeepSeek 的图面布局更紧凑，使用独立 GND 符号，阅读起来更清爽。
+    </p>
+
+    <div class="compare-grid">
+      <figure class="article-figure">
+        <img src="assets/kicad-compare/gemini-sch.png" alt="Gemini 4 Neon 生成的 AMS1117-3.3 原理图">
+        <figcaption>Gemini 4 Neon（Antigravity）：含 TP1~TP3 测试点与 PWR_FLAG</figcaption>
+      </figure>
+      <figure class="article-figure">
+        <img src="assets/kicad-compare/deepseek-sch.png" alt="DeepSeek 4.1 Flash 生成的 AMS1117-3.3 原理图">
+        <figcaption>DeepSeek 4.1 Flash（WorkBuddy + Skill）：分立 GND，图面紧凑清爽</figcaption>
+      </figure>
+    </div>
+
+    <h2>四、PCB 布局与工艺对比（差距最明显）</h2>
+    <p>
+      真正拉开差距的是 PCB 阶段。把两张 PCB 放在一起看，可以一眼看出<strong>“能用、能过 DRC”</strong>与<strong>“接近工程打样标准”</strong>之间的区别：
+    </p>
+
+    <div class="compare-grid">
+      <figure class="article-figure">
+        <img src="assets/kicad-compare/gemini-pcb.png" alt="Gemini 4 Neon 生成的 AMS1117-3.3 双层 PCB">
+        <figcaption>Gemini 4 Neon（裸跑 + 1 次 45° 提示）：基本功能完备，但丝印重叠、缺少板边工艺</figcaption>
+      </figure>
+      <figure class="article-figure">
+        <img src="assets/kicad-compare/deepseek-pcb.jpg" alt="DeepSeek 4.1 Flash 生成的 AMS1117-3.3 双层 PCB">
+        <figcaption>DeepSeek 4.1 Flash（Skill 强化审核）：倒角、安装孔、缝合地孔、无重叠丝印一步到位</figcaption>
+      </figure>
+    </div>
+
+    <ul>
+      <li><strong>板框与机械结构</strong>：Gemini 给出了标准矩形板框；DeepSeek 在 Skill 的约束下主动做了<strong>四角 45° 倒角</strong>，并在底部对称布置了 <strong>2 个定位安装孔</strong>，更像一块真正准备发去打样的测试板。</li>
+      <li><strong>铺铜与过孔（Via Stitching）</strong>：Gemini 在底层做了整面 GND 铺铜并给每个 GND 焊盘就近打孔；DeepSeek 则更进一步，在整板布设了均匀整齐的<strong>缝合地孔阵列</strong>，散热与回流路径更扎实。</li>
+      <li><strong>丝印可读性</strong>：Gemini 保留了所有元器件的值文本（<code>10uF</code>、<code>22uF</code> 等），导致 <code>C1/C2</code>、<code>C3/C4</code> 丝印互相重叠，且 <code>TP1-J1</code> 走线压在丝印上；DeepSeek 隐藏了多余的容值丝印，只保留清晰对齐的位号与底部版本号 <code>LDO_DEMO REV 1.1</code>，板面非常干净。</li>
+    </ul>
+
+    <div class="callout">
+      <strong>实测总结：</strong><br>
+      1. <strong>Gemini 4 Neon（Antigravity）</strong> 的裸跑能力很强：不依赖任何外部规则，就能自己摸清本机 KiCad 工程、写出合法文件并用 <code>kicad-cli</code> 跑通 0 错误 ERC/DRC，且额度消耗极低；但它默认只保证“电气正确”，不会自动替你把板子做到“工艺美观”。<br>
+      2. <strong>DeepSeek 4.1 Flash（WorkBuddy）</strong> 搭配专用 <strong>KiCad Skill 强化审核</strong> 后，成板质量直接上了一个台阶——倒角、安装孔、缝合过孔、丝印防重叠、45° 走线全都落到了实处。<br>
+      3. <strong>下一步启发</strong>：AI 画 PCB，<strong>模型底座决定下限（能不能跑通），工程 Skill 决定上限（像不像老工程师画的板子）</strong>。后续可以把这套 KiCad 工艺审核 Skill 也沉淀到 Antigravity 里，看看强模型 + 强 Skill 结合能达到什么水准。
+    </div>
+  </article>
+</main>
+
+<footer><span>© 2026 计量硬件实验室</span><span>基于 GitHub Pages 构建 · 纯静态网页</span></footer>
+</body>
+</html>
