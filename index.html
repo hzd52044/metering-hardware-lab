@@ -3,98 +3,135 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Metering Hardware Lab — 电能计量、智能量测、PCB与嵌入式硬件设计实验室">
-<title>Metering Hardware Lab</title>
+<meta name="description" content="计量硬件实验室 — 电能计量、智能量测、PCB与嵌入式硬件设计个人记录站">
+<title>计量硬件实验室</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="site-header">
   <a class="brand" href="index.html">
-    <span class="brand-mark">MH</span>
-    <span><b>Metering Hardware Lab</b><small>电能计量 · PCB · Embedded</small></span>
+    <span class="brand-mark">计</span>
+    <span><b>计量硬件实验室</b><small>电能计量 · PCB · 嵌入式</small></span>
   </a>
   <nav>
-    <a href="#projects">Projects</a>
-    <a href="#notes">Lab Notes</a>
-    <a href="#vlog">VLOG</a>
-    <a href="#about">About</a>
+    <a href="#projects">硬件项目</a>
+    <a href="#notes">实验笔记</a>
+    <a href="#vlog">实验视频</a>
+    <a href="#about">关于我</a>
+    <a href="#contact">联系交流</a>
   </nav>
 </header>
 
 <main>
 <section class="hero">
   <div class="hero-copy">
-    <p class="eyebrow">HARDWARE ENGINEERING / METERING / EMBEDDED</p>
+    <p class="eyebrow">硬件工程 / 电能计量 / 嵌入式</p>
     <h1>把电路板<br><em>做出来，也记录下来。</em></h1>
     <p class="lead">记录电能计量、智能量测、充电桩控制、通信与嵌入式硬件设计中的真实项目、实验和问题。</p>
     <div class="hero-actions">
-      <a class="button primary" href="#projects">Explore Projects</a>
-      <a class="button" href="#notes">Read Lab Notes</a>
+      <a class="button primary" href="#projects">浏览硬件项目</a>
+      <a class="button" href="#notes">阅读实验笔记</a>
     </div>
   </div>
   <div class="hero-board">
     <div class="pcb">
       <div class="chip c1"></div><div class="chip c2"></div>
       <div class="trace t1"></div><div class="trace t2"></div><div class="trace t3"></div>
-      <div class="label">MEASUREMENT UNIT<br><small>REV 2.0</small></div>
+      <div class="label">计量采集单元<br><small>版本 2.0</small></div>
       <div class="pads"></div>
     </div>
   </div>
 </section>
 
 <section class="stats">
-  <div><strong>04</strong><span>Featured Projects</span></div>
-  <div><strong>08+</strong><span>Engineering Topics</span></div>
-  <div><strong>∞</strong><span>Experiments to Record</span></div>
+  <div><strong>04</strong><span>精选硬件项目</span></div>
+  <div><strong>08+</strong><span>工程技术专题</span></div>
+  <div><strong>∞</strong><span>持续记录的实验</span></div>
 </section>
 
 <section id="projects" class="section">
-  <div class="section-head"><div><p class="eyebrow">SELECTED WORK</p><h2>Hardware Projects</h2></div><span>01 / 04</span></div>
+  <div class="section-head"><div><p class="eyebrow">精选作品</p><h2>硬件项目</h2></div><span>01 / 04</span></div>
   <div class="project-grid">
     <article class="project-card featured">
       <div class="project-image board-image"><span>RN8209D</span></div>
-      <div class="card-body"><div class="tags"><span>Metering</span><span>PCB</span></div><h3>DC Measurement Unit V2.0</h3><p>250 μΩ shunt · RN8209D · high-speed sampling · 10 ms data update</p><a href="#">View project →</a></div>
+      <div class="card-body"><div class="tags"><span>电能计量</span><span>PCB设计</span></div><h3>直流计量单元 V2.0</h3><p>250 μΩ 分流器 · RN8209D · 高速采样 · 10 ms 数据刷新</p><a href="#">查看项目 →</a></div>
     </article>
     <article class="project-card">
-      <div class="project-image board-image dark"><span>SMART SWITCH</span></div>
-      <div class="card-body"><div class="tags"><span>Smart Metering</span><span>MCU</span></div><h3>Smart Measurement Switch</h3><p>独立分相动作、交流参量量测与通信接口设计。</p><a href="#">View project →</a></div>
+      <div class="project-image board-image dark"><span>智能量测开关</span></div>
+      <div class="card-body"><div class="tags"><span>智能量测</span><span>MCU</span></div><h3>智能量测开关</h3><p>独立分相动作、交流参量量测与通信接口设计。</p><a href="#">查看项目 →</a></div>
     </article>
     <article class="project-card">
-      <div class="project-image board-image copper"><span>22 kW</span></div>
-      <div class="card-body"><div class="tags"><span>EV / V2G</span><span>Power</span></div><h3>Charging Controller</h3><p>充电桩控制、CAN、继电器驱动与保护电路。</p><a href="#">View project →</a></div>
+      <div class="project-image board-image copper"><span>22 kW 充电控制</span></div>
+      <div class="card-body"><div class="tags"><span>新能源 / V2G</span><span>电源控制</span></div><h3>充电桩控制器</h3><p>充电桩控制、CAN、继电器驱动与保护电路。</p><a href="#">查看项目 →</a></div>
     </article>
     <article class="project-card">
-      <div class="project-image board-image blue"><span>485 / CAN</span></div>
-      <div class="card-body"><div class="tags"><span>Communication</span><span>Embedded</span></div><h3>M7 Communication Board</h3><p>RS485、CAN、以太网与TCP通信架构。</p><a href="#">View project →</a></div>
+      <div class="project-image board-image blue"><span>485 / CAN 通信</span></div>
+      <div class="card-body"><div class="tags"><span>工业通信</span><span>嵌入式</span></div><h3>M7 通信板</h3><p>RS485、CAN、以太网与 TCP 通信架构。</p><a href="#">查看项目 →</a></div>
     </article>
   </div>
 </section>
 
 <section id="notes" class="section notes-section">
-  <div class="section-head"><div><p class="eyebrow">FROM THE LAB</p><h2>Lab Notes</h2></div><span>ENGINEERING LOG</span></div>
+  <div class="section-head"><div><p class="eyebrow">来自实验室</p><h2>实验笔记</h2></div><span>工程日志</span></div>
   <div class="notes">
-    <a href="#" class="note"><time>23 NOV 2026</time><h3>5V 2A电源为什么一带载电压就掉？</h3><p>从反馈环路、启动供电、变压器与次级整流逐项排查。</p><b>Read note →</b></a>
-    <a href="#" class="note"><time>21 NOV 2026</time><h3>RN8209D：20 mV纹波为什么会测出异常大电流？</h3><p>从采样原理、HPF、直流偏置和算法校准分析。</p><b>Read note →</b></a>
-    <a href="#" class="note"><time>18 NOV 2026</time><h3>RS485密集发送后“死掉”，DMA到底发生了什么？</h3><p>记录RTT线程、UART DMA与波特率切换问题的定位过程。</p><b>Read note →</b></a>
+    <a href="#" class="note"><time>2026年11月23日</time><h3>5V 2A电源为什么一带载电压就掉？</h3><p>从反馈环路、启动供电、变压器与次级整流逐项排查。</p><b>阅读笔记 →</b></a>
+    <a href="#" class="note"><time>2026年11月21日</time><h3>RN8209D：20 mV纹波为什么会测出异常大电流？</h3><p>从采样原理、HPF、直流偏置和算法校准分析。</p><b>阅读笔记 →</b></a>
+    <a href="#" class="note"><time>2026年11月18日</time><h3>RS485密集发送后“死掉”，DMA到底发生了什么？</h3><p>记录RTT线程、UART DMA与波特率切换问题的定位过程。</p><b>阅读笔记 →</b></a>
   </div>
 </section>
 
 <section id="vlog" class="section vlog">
   <div>
-    <p class="eyebrow">ENGINEERING VLOG</p>
+    <p class="eyebrow">工程视频</p>
     <h2>真实实验，真实问题。</h2>
-    <p>以后这里可以直接嵌入你的 B 站 / YouTube 视频。网站负责项目资料与图片，视频平台负责视频托管。</p>
+    <p>以后这里可以直接嵌入你的 B 站 / 抖音视频。网站负责项目资料与图片，视频平台负责视频托管。</p>
   </div>
-  <div class="video-placeholder"><span>▶</span><p>VLOG / LAB VIDEO</p><small>Replace with your video embed</small></div>
+  <div class="video-placeholder"><span>▶</span><p>实验视频 / 工程 VLOG</p><small>后续可在此嵌入视频链接</small></div>
 </section>
 
 <section id="about" class="about">
-  <p class="eyebrow">ABOUT THE LAB</p>
-  <h2>Hardware is built by<br>measuring, testing and iterating.</h2>
+  <p class="eyebrow">关于实验室</p>
+  <h2>好的硬件，是在<br>测量、测试与迭代中打磨出来的。</h2>
   <p>一个面向电能计量、智能量测、充电桩与嵌入式硬件设计的个人工程记录站。这里记录的不只是最终产品，也记录设计过程中的判断、失败和修改。</p>
+</section>
+
+<section id="contact" class="section contact-section">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">联系与关注</p>
+      <h2>找到我</h2>
+    </div>
+    <span>扫码交流</span>
+  </div>
+  <div class="qr-grid">
+    <div class="qr-card">
+      <div class="qr-box">
+        <!-- 后续替换图片：<img src="assets/qr-wechat.png" alt="微信二维码"> -->
+        <span class="qr-placeholder">微信二维码<br><small>预留位置</small></span>
+      </div>
+      <h3>微信</h3>
+      <p>扫码添加微信，交流硬件设计与项目经验</p>
+    </div>
+    <div class="qr-card">
+      <div class="qr-box">
+        <!-- 后续替换图片：<img src="assets/qr-douyin.png" alt="抖音二维码"> -->
+        <span class="qr-placeholder">抖音二维码<br><small>预留位置</small></span>
+      </div>
+      <h3>抖音</h3>
+      <p>扫码关注抖音号，看日常硬件调试与实拍</p>
+    </div>
+    <div class="qr-card">
+      <div class="qr-box">
+        <!-- 后续替换图片：<img src="assets/qr-bilibili.png" alt="B站账号二维码"> -->
+        <span class="qr-placeholder">B站账号二维码<br><small>预留位置</small></span>
+      </div>
+      <h3>哔哩哔哩（B站）</h3>
+      <p>扫码关注 B 站，看完整工程视频与实验复盘</p>
+    </div>
+  </div>
 </section>
 </main>
 
-<footer><span>© 2026 Metering Hardware Lab</span><span>Built for GitHub Pages · Static HTML/CSS</span></footer>
+<footer><span>© 2026 计量硬件实验室</span><span>基于 GitHub Pages 构建 · 纯静态网页</span></footer>
 </body>
 </html>
