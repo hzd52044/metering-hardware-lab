@@ -62,13 +62,13 @@
 .notes-section{background:#111;color:#eee}
 .notes-section .eyebrow,.notes-section .section-head>span{color:#888}
 .notes-section .section-head{border-color:#333}
-.notes{display:grid;grid-template-columns:repeat(3,1fr);border-left:1px solid #333}
-.note{padding:28px;border-right:1px solid #333;color:inherit;text-decoration:none;min-height:270px}
+.notes{display:grid;grid-template-columns:repeat(2,1fr);border-left:1px solid #333;border-top:1px solid #333}
+.note{padding:28px;border-right:1px solid #333;border-bottom:1px solid #333;color:inherit;text-decoration:none;min-height:250px;display:flex;flex-direction:column}
 .note:hover{background:#191919}
 .note time{font-size:11px;color:#777}
 .note h3{font-size:20px;line-height:1.35;margin:30px 0 15px}
 .note p{font-size:13px;color:#888}
-.note b{display:block;color:#ddd;margin-top:30px}
+.note b{display:block;color:#ddd;margin-top:auto;padding-top:24px}
 .vlog{display:grid;grid-template-columns:.8fr 1.2fr;gap:70px;align-items:center}
 .vlog h2{font-size:46px;line-height:1.12;letter-spacing:-.04em}
 .vlog p:not(.eyebrow){color:#777;max-width:500px}
@@ -84,8 +84,8 @@
 .qr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
 .qr-card{background:var(--card);border:1px solid #ddd;padding:32px 24px;text-align:center;transition:transform .25s}
 .qr-card:hover{transform:translateY(-4px)}
-.qr-box{width:220px;margin:0 auto 20px;border:1px solid #e6e6e0;background:#fff;display:flex;align-items:center;justify-content:center;border-radius:6px;padding:8px}
-.qr-box img{width:100%;height:auto;display:block}
+.qr-box{width:220px;max-width:100%;height:280px;margin:0 auto 20px;border:1px solid #e6e6e0;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:6px;padding:10px}
+.qr-box img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block}
 .qr-placeholder{font-size:14px;font-weight:600;color:#555;line-height:1.6}
 .qr-placeholder small{font-size:11px;font-weight:400;color:#888}
 .qr-card h3{font-size:18px;margin:0 0 8px}
@@ -100,7 +100,8 @@
 .article-lead{font-size:17px;color:#333;background:#ecece6;border-left:3px solid #111;padding:18px 22px;margin:0 0 36px}
 .article-body h2{font-size:24px;letter-spacing:-.02em;margin:48px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--line)}
 .article-body p{margin:0 0 18px}
-.article-body ul{margin:0 0 22px;padding-left:22px}
+.article-body ul,.article-body ol{margin:0 0 22px;padding-left:22px}
+.article-body ul ul,.article-body ol ul{margin:10px 0 6px}
 .article-body li{margin-bottom:10px}
 .article-body code{font-family:"DM Mono",Consolas,monospace;font-size:13px;background:#e8e8e2;padding:2px 6px;border-radius:3px}
 .table-scroll{overflow-x:auto;margin:24px 0 32px}

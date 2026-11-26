@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="把一块废弃的 2.9 寸无线电子标签（STM32L051C8T6 + 25Q16 + A7139）改造成超低功耗随身墨水屏背题器的完整硬件拆解、软件思路与成品实录。">
+<title>变废为宝：废弃无线电子标签改造超低功耗墨水屏背题器 — 计量硬件实验室</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html">
+    <span class="brand-mark">计</span>
+    <span><b>计量硬件实验室</b><small>电能计量 · PCB · 嵌入式</small></span>
+  </a>
+  <nav>
+    <a href="index.html#projects">硬件项目</a>
+    <a href="index.html#notes">实验笔记</a>
+    <a href="index.html#vlog">实验视频</a>
+    <a href="index.html#about">关于我</a>
+    <a href="index.html#contact">联系交流</a>
+  </nav>
+</header>
+
+<main class="article-wrap">
+  <a class="back-link" href="index.html#notes">← 返回实验笔记</a>
+
+  <header class="article-head">
+    <p class="eyebrow">硬件改造 / STM32L0 / 墨水屏 / 超低功耗</p>
+    <h1>变废为宝：把一块废弃的无线电子标签，改造成超低功耗“墨水屏背题器”</h1>
+    <div class="article-meta">
+      <span>2026年11月26日</span>
+      <span>主控：STM32L051C8T6 + 25Q16（2MB）</span>
+      <span>屏幕：2.9 寸黑白墨水屏（296×128）</span>
+    </div>
+  </header>
+
+  <article class="article-body">
+    <p class="article-lead">
+      偶然捡到一块废弃的 2.9 寸无线电子标签（类似商超里的电子价签）。原本的系统早已用不上了，但通电一看，这块黑白墨水屏依然完好。<br>
+      墨水屏最大的魅力就是<strong>断电不消失、无背光不伤眼、功耗低到几乎可以忽略</strong>。扔了实在可惜，不如给它找份新工作——正好手头有一堆需要死记硬背的文字考点，干脆把它改造成一个摆在桌角的<strong>超低功耗随身背题器</strong>。
+    </p>
+
+    <h2>一、盘点“家底”：这块板子藏了哪些资源？</h2>
+    <p>
+      拆开外壳顺着线路摸了一遍，发现这块小板子的硬件底子其实相当扎实：
+    </p>
+    <ul>
+      <li><strong>大脑</strong>：一颗主打超低功耗的 <code>STM32L051C8T6</code> 单片机，虽然只有 8KB 内存，但休眠电流低至微安级。</li>
+      <li><strong>面子</strong>：一块 2.9 寸黑白墨水屏（296×128 分辨率），白底黑字，清晰得像印刷纸。</li>
+      <li><strong>仓库</strong>：一颗 2MB 的外部存储芯片（<code>25Q16</code>），而且自带独立的电源开关控制，不用时可以彻底断电省电。</li>
+      <li><strong>交互</strong>：外壳右侧自带功能按键和一条长条形指示灯窗，内部藏着 4 组独立按键和一颗红绿蓝三色 RGB 指示灯。</li>
+      <li><strong>隐藏技能</strong>：板子上还焊了一颗 433MHz 远距离无线射频芯片（<code>A7139</code>），第一版先让它“休眠待命”。</li>
+    </ul>
+
+    <!-- 待补充照片 1（拆机/裸板图）：将图片放到 assets/eink-flashcard/eink-teardown.jpg 后取消下方注释即可显示
+    <figure class="article-figure">
+      <img src="assets/eink-flashcard/eink-teardown.jpg" alt="废弃无线电子标签拆机内部主板">
+      <figcaption>图 1：拆开外壳后的内部主板，麻雀虽小五脏俱全，主控、2MB 存储、三色灯和 433MHz 射频芯片一应俱全。</figcaption>
+    </figure>
+    -->
+
+    <h2>二、构思与实现：把苦活交给电脑，单片机只管省电翻页</h2>
+    <p>
+      硬件只有 8KB 内存，想直接在单片机里做中文字库解析、自动换行和表格排版，既费劲又容易把内存撑爆。既然是自己用，干脆换个思路——<strong>把排版渲染全交给电脑，单片机只管当个纯粹的“翻页机器”</strong>。
+    </p>
+    <ol>
+      <li><strong>资料变卡片</strong>：在电脑上写了个小脚本，直接把 Word 里的复习表格自动拆分成一张张 296×128 的黑白位图卡片。整套复习资料最终浓缩成了 <strong>109 页精华卡片</strong>，只占用了 2MB 存储空间的不到四分之一，以后再塞几门课进来也绰绰有余。</li>
+      <li><strong>专属烧录通道</strong>：给外部存储芯片配了个一键烧录通道，以后想换背诵科目，插上线十几秒就能把新资料刷进去。</li>
+      <li><strong>极简流式刷屏</strong>：单片机唤醒后，一小块一小块把图片从存储里读出来送进屏幕，刷完立刻给存储芯片彻底断电，全程几乎不占内存，也不浪费一点电。</li>
+    </ol>
+
+    <h2>三、最终成品：它现在能干什么？</h2>
+    <p>
+      改造装壳后，它变成了一个摆在桌上毫无违和感的极简学习小摆件：
+    </p>
+
+    <figure class="article-figure">
+      <img src="assets/eink-flashcard/eink-finished.jpg" alt="改造完成后的墨水屏背题器成品实拍">
+      <figcaption>改造完成后的“墨水屏背题器”成品——顶部黑底白字状态栏清晰显示当前模块、页码（共 109 页）、收藏星标 ★ 与模式标识；右侧保留了原外壳的指示灯条与紫色功能按键，观感几乎和印刷纸一样清爽。</figcaption>
+    </figure>
+
+    <ul>
+      <li><strong>每 15 分钟自动“投喂”一页</strong>：不需要人去管它，放在书桌或工位上，每隔 15 分钟它会自动醒来，随机换上一页新考点。工作间隙抬头瞥一眼，顺手就记一条，主打一个“润物细无声”。</li>
+      <li>
+        <strong>顺手的四键盲操 + 灯光反馈</strong>：
+        <ul>
+          <li><strong>上一页 / 下一页</strong>（<code>K3 / K5</code>）：想主动刷题时随时翻页，伴随<strong>蓝灯</strong>轻闪一下；</li>
+          <li><strong>收藏难点</strong>（<code>K4</code>）：遇到老记不住的硬骨头，按一下收藏，<strong>绿灯</strong>亮起确认，屏幕右上角同步点亮星标 <code>★</code>，进度和收藏列表直接存进芯片内部，断电重启也不丢；</li>
+          <li><strong>取消收藏</strong>（<code>K1 / K2</code>）：背熟了就一键移出，<strong>红灯</strong>轻闪提示。</li>
+        </ul>
+      </li>
+      <li><strong>15 秒无操作自动休眠</strong>：翻完页放回桌上，15 秒没动静它就自动进入深度睡眠。屏幕画面稳稳停在那里，整机几乎不耗电，续航论月算。</li>
+    </ul>
+
+    <h2>四、最有趣的地方与未来彩蛋</h2>
+    <p>
+      用了一阵子发现，它比手机背题软件舒服太多了——<strong>没有弹窗、没有消息打扰、不发光也不刺眼</strong>，就像一张会自动翻页的实体便利贴。把一块原本要进垃圾桶的电子标签救活，看着它在桌上安安静静地每 15 分钟翻一次页，这种“物尽其用”的快乐，大概就是折腾硬件最大的魅力。
+    </p>
+
+    <figure class="article-figure">
+      <img src="assets/eink-flashcard/eink-desk.jpg" alt="墨水屏背题器摆在书桌一角的实际效果">
+      <figcaption>摆在书桌一角的实际观感——不发光、不刺眼，无弹窗打扰，就像一张会定时自动翻页的实体便利贴。</figcaption>
+    </figure>
+
+    <div class="callout">
+      <strong>下一阶段的彩蛋：</strong><br>
+      板子上那颗还没启用的 <strong>433MHz 无线芯片</strong> 依然在沉睡。等哪天手痒了，打算给它配个电脑端的小发射器，直接升级成<strong>无线远程推送版</strong>——不用插线就能隔空更新背诵资料，甚至改成工位状态牌、无线留言板，一块小板子还能玩出不少花样。
+    </div>
+  </article>
+</main>
+
+<footer><span>© 2026 计量硬件实验室</span><span>基于 GitHub Pages 构建 · 纯静态网页</span></footer>
+</body>
+</html>
